@@ -5,7 +5,7 @@ import type { GetImageQuery } from './dto/get-image-params.dto';
 
 @Controller()
 export class TrackingController {
-  constructor(private readonly imageService: TrackingService) {}
+  constructor(private readonly trackingService: TrackingService) {}
 
   @Get('/image')
   getTrackingPixel(
@@ -17,7 +17,7 @@ export class TrackingController {
     console.log(
       `[${id}] Image Request (OS: ${os}, Client: ${client}, Extra: ${extra})`,
     );
-    const image = this.imageService.getImage('public/tracking.png');
+    const image = this.trackingService.getImage('public/tracking.png');
     res.setHeader('Content-type', 'image/png');
     return res.status(200).send(image);
   }
