@@ -1,11 +1,11 @@
 import { Controller, Get, Query, Req, Res } from '@nestjs/common';
-import { ImageService } from './image.service';
+import { TrackingService } from './tracking.service';
 import express from 'express';
 import type { GetImageQuery } from './dto/get-image-params.dto';
 
 @Controller()
-export class ImageController {
-  constructor(private readonly imageService: ImageService) {}
+export class TrackingController {
+  constructor(private readonly imageService: TrackingService) {}
 
   @Get('/image')
   getTrackingPixel(
