@@ -7,6 +7,7 @@ import 'hbs';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  app.useStaticAssets(path.join(__dirname, '..', 'public'));
   app.setViewEngine('hbs');
   app.setBaseViewsDir(path.join(__dirname, '..', 'views'));
 
