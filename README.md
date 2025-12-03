@@ -11,7 +11,8 @@ If you want to use vercel,
 
 ```bash
 npm i -g vercel
-vercel . # setup
+vercel build
+vercel . # deploy (if you have vercel server to deploy)
 ```
 
 # Structure
