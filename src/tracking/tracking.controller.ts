@@ -13,7 +13,10 @@ export class TrackingController {
     @Res() res: express.Response,
   ) {
     // TODO: store the values to somewhere
-    const { id, os, client } = getImageQuery;
+    const { id, os, client, extra } = getImageQuery;
+    console.log(
+      `[${id}] Image Request (OS: ${os}, Client: ${client}, Extra: ${extra})`,
+    );
     const image = this.imageService.getImage('public/tracking.png');
     res.setHeader('Content-type', 'image/png');
     return res.status(200).send(image);
