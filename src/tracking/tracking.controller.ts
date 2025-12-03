@@ -14,8 +14,9 @@ export class TrackingController {
   ) {
     // TODO: store the values to somewhere
     const { id, os, client, extra } = getImageQuery;
+    const now = Date.now();
     console.log(
-      `[${id}] Image Request (OS: ${os}, Client: ${client}, Extra: ${extra})`,
+      `[${id}] Image Request (id: ${id}, OS: ${os}, Client: ${client}, Extra: ${extra}, timestamp: ${now})`,
     );
     const image = this.trackingService.getImage('public/tracking.png');
     res.setHeader('Content-type', 'image/png');
