@@ -12,12 +12,14 @@ export class TrackingController {
     @Query() getImageQuery: GetImageQuery,
     @Res() res: express.Response,
   ) {
-    // TODO: store the values to somewhere
     const { id } = getImageQuery;
     const now = Date.now();
     console.log(
       `[${id}] Image Request (timestamp: ${now}, ${JSON.stringify(getImageQuery)})`,
     );
+    // logging의 성격이라 await 붙이지 않고 background task로 넘김
+    this.trackingService.recordTrackingLog(getImageQuery);
+
     const image = this.trackingService.getImage('public/tracking.png');
     res.setHeader('Content-type', 'image/png');
     return res.status(200).send(image);
