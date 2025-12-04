@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PageController } from './page.controller';
-import { TrackingModule } from 'src/tracking/tracking.module';
+import { TrackingModule } from '../tracking/tracking.module';
 
 @Module({
   imports: [TrackingModule],

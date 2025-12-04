@@ -1,6 +1,6 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TrackingService } from 'src/tracking/tracking.service';
+import { TrackingService } from '../tracking/tracking.service';
 
 @Controller()
 export class PageController {
