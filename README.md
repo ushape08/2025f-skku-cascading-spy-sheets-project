@@ -7,7 +7,13 @@ npm i
 npm run start:dev
 ```
 
-If you want to use vercel,
+- You need to install MongoDB seperately and also set its URL in `.env` file.
+
+```
+MONGODB_URI="mongodb://localhost/cascading-spy-sheets"
+```
+
+- If you want to use vercel,
 
 ```bash
 npm i -g vercel
@@ -57,12 +63,14 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
 
 ### Request Query Parameters
 
-| Key      | Required | Description                                                          |
-| -------- | -------- | -------------------------------------------------------------------- |
-| `id`     | Yes      | 현재 페이지에 부여된 고유한 `id` 값                                  |
-| `os`     |          | 현재 유저가 사용하고 있는 것으로 추측되는 운영체제                   |
-| `client` |          | 현재 유저가 사용하고 있는 것으로 추측되는 브라우저/이메일 클라이언트 |
-| `extra`  |          | 기타 기록이 필요한 정보들                                            |
+| Key               | Required | Description                                                          |
+| ----------------- | -------- | -------------------------------------------------------------------- |
+| `id`              | Yes      | 현재 페이지에 부여된 고유한 `id` 값                                  |
+| `os`              |          | 현재 유저가 사용하고 있는 것으로 추측되는 운영체제                   |
+| `client`          |          | 현재 유저가 사용하고 있는 것으로 추측되는 브라우저/이메일 클라이언트 |
+| `font`            |          | 유저가 설치했는지 확인할 글꼴 이름. URL Encoding을 권장합니다.       |
+| `isFontInstalled` |          | 유저가 해당 글꼴을 설치했는지 여부. `true` 또는 `false`만을 허용함   |
+| `extra`           |          | 기타 기록이 필요한 정보들                                            |
 
 ### Response
 
