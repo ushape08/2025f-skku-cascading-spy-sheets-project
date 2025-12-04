@@ -62,6 +62,8 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
 
 ## `GET /image`
 
+요청 온 정보를 `tracking` collection에 저장하고, 1 × 1 크기의 PNG 이미지를 반환합니다.
+
 ### Request Query Parameters
 
 | Key               | Required | Description                                                          |
@@ -75,4 +77,58 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
 
 ### Response
 
-- 1 × 1 크기의 PNG tracking pixel
+1 × 1 크기의 PNG tracking pixel
+
+## `GET /admin/tracking-logs`
+
+`tracking` collection에 기록된 정보를 조회합니다.
+
+이 API 요청에는 인증이 필요합니다. headers의 `x-api-key`에 사전 공유된 API KEY를 넣어서 요청해주세요.
+
+### Request Query Parameters
+
+모든 Query Parameter는 optional합니다.
+
+| Key               | Required | Description                                                                  |
+| ----------------- | -------- | ---------------------------------------------------------------------------- |
+| `id`              |          | `id` 일치 조건                                                               |
+| `os`              |          | `os` 일치 조건                                                               |
+| `client`          |          | `client` 일치 조건                                                           |
+| `font`            |          | `font` 일치 조건                                                             |
+| `isFontInstalled` |          | `isFontInstalled` 일치 조건. `true` 또는 `false`만을 허용함                  |
+| `extra`           |          | `extra` 일치 조건                                                            |
+| `from`            |          | 조회 시작 범위 조건. UTC +00 기준 `YYYY-MM-DD HH:MM:SS` 형식으로 보내주세요. |
+| `to`              |          | 조회 종료 범위 조건. UTC +00 기준 `YYYY-MM-DD HH:MM:SS` 형식으로 보내주세요. |
+
+### Response Body
+
+| Field     | Type         | Description                                                          |
+| --------- | ------------ | -------------------------------------------------------------------- |
+| `total`   | Int          | `results`의 길이                                                     |
+| `results` | Object Array | 조회된 `tracking` 결과. `tracking` collection의 schema를 따라갑니다. |
+
+예시
+
+```json
+{
+    "total": 2,
+    "results": [
+        {
+            "_id": "69319dad3ab4a3861a951d18",
+            "id": "4d189808732a8a15",
+            "os": "windows11",
+            "createdAt": "2025-12-04T14:41:49.697Z",
+            "updatedAt": "2025-12-04T14:41:49.697Z",
+            "__v": 0
+        },
+        {
+            "_id": "6931c740660a1ea93a68c9f7",
+            "id": "8706e82b78962603",
+            "os": "ubuntu22.04",
+            "createdAt": "2025-12-04T17:39:12.914Z",
+            "updatedAt": "2025-12-04T17:39:12.914Z",
+            "__v": 0
+        }
+
+
+```
