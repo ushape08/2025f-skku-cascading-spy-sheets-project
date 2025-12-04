@@ -5,6 +5,7 @@ import { TrackingModule } from './tracking/tracking.module';
 import { PageModule } from './page/page.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AdminModule } from './admin/admin.module';
 import configuration from './configuration';
 
 @Module({
@@ -20,6 +21,7 @@ import configuration from './configuration';
       }),
       inject: [ConfigService],
     }),
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
