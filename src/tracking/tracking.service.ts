@@ -3,7 +3,7 @@ import path from 'path';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Tracking, TrackingDocument } from 'src/mongo/schemas/tracking.schema';
+import { Tracking, TrackingDocument } from '../mongo/schemas/tracking.schema';
 import { Model } from 'mongoose';
 import { GetImageQuery } from './dto/get-image-params.dto';
 
