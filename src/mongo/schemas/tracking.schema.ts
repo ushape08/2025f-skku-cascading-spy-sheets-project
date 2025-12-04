@@ -46,4 +46,9 @@ export class Tracking {
 
 export const TrackingSchema = SchemaFactory.createForClass(Tracking);
 
-TrackingSchema.index({ id: 1, timestamp: 1 });
+TrackingSchema.index(
+  { id: 1, createdAt: -1 },
+  { name: 'idx_id_createdAt_desc' },
+);
+
+TrackingSchema.index({ createdAt: -1 }, { name: 'idx_createdAt_desc' });
