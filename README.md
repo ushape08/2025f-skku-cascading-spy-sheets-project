@@ -10,7 +10,8 @@ npm run start:dev
 - You need to install MongoDB seperately and also set its URL in `.env` file.
 
 ```
-MONGODB_URI="mongodb://localhost/cascading-spy-sheets"
+MONGODB_URI="mongodb://localhost"
+MONGODB_DATABASE="cascading-spy-sheets"
 ```
 
 - If you want to use vercel,

@@ -16,6 +16,7 @@ import configuration from './configuration';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
+        dbName: configService.get<string>('MONGODB_DATABASE'),
       }),
       inject: [ConfigService],
     }),
