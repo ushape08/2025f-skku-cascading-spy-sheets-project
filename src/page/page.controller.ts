@@ -1,11 +1,15 @@
 import { Controller, Get, Render } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TrackingService } from 'src/tracking/tracking.service';
 
 @Controller()
 export class PageController {
   private readonly serverDomain;
-  constructor(private readonly trackingService: TrackingService) {
-    this.serverDomain = process.env.SERVER_DOMAIN ?? 'http://localhost:3000';
+  constructor(
+    private readonly trackingService: TrackingService,
+    private readonly configService: ConfigService,
+  ) {
+    this.serverDomain = this.configService.get('SERVER_DOMAIN');
   }
   @Get('/example')
   @Render('example')
