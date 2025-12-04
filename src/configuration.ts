@@ -3,4 +3,5 @@ export default () => ({
   SERVER_DOMAIN: process.env.SERVER_DOMAIN ?? 'http://localhost:3000',
   MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost',
   MONGODB_DATABASE: process.env.MONGODB_DATABASE || 'cascading-spy-sheets',
+  API_KEY: process.env.API_KEY || '1234',
 });
