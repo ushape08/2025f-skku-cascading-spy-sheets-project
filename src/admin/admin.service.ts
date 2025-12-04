@@ -11,7 +11,7 @@ export class AdminService {
     private readonly trackingModel: Model<TrackingDocument>,
   ) {}
   async getTrackingLogs(params: GetTrackingLogsParamsDto) {
-    const { id, os, client, font, isFontInstalled, from, to } = params;
+    const { id, os, client, font, isFontInstalled, from, to, extra } = params;
 
     const filter: FilterQuery<TrackingDocument> = {};
 
@@ -20,6 +20,7 @@ export class AdminService {
     if (client) filter.client = client;
     if (font) filter.font = font;
     if (isFontInstalled) filter.isFontInstalled = isFontInstalled;
+    if (extra) filter.extra = extra;
 
     if (from || to) {
       filter.createdAt = {};
