@@ -3,19 +3,15 @@ import { HydratedDocument } from 'mongoose';
 
 export type TrackingDocument = HydratedDocument<Tracking>;
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class Tracking {
   @Prop({
     type: String,
     required: true,
   })
   id: string; // HTML request에 부여되는 id
-
-  @Prop({
-    type: Date,
-    required: true,
-  })
-  timestamp: Date; // template engine을 기반으로 HTML 페이지를 만든 시점
 
   @Prop({
     type: String,
@@ -30,10 +26,16 @@ export class Tracking {
   client?: string;
 
   @Prop({
-    type: [String],
-    default: [],
+    type: String,
+    required: false,
   })
-  fonts: string[];
+  font?: string;
+
+  @Prop({
+    type: Boolean,
+    required: false,
+  })
+  isFontInstalled?: boolean;
 
   @Prop({
     type: String,
@@ -44,7 +46,4 @@ export class Tracking {
 
 export const TrackingSchema = SchemaFactory.createForClass(Tracking);
 
-TrackingSchema.index(
-  { id: 1, timestamp: 1 },
-  { unique: true, name: 'id_timestamp_index' },
-);
+TrackingSchema.index({ id: 1, timestamp: 1 });
