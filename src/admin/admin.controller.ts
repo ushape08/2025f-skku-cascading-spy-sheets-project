@@ -10,6 +10,11 @@ export class AdminController {
 
   @Get('tracking-logs')
   async GetTrackingLogsParamsDto(@Query() params: GetTrackingLogsParamsDto) {
-    return this.adminService.getTrackingLogs(params);
+    return await this.adminService.getTrackingLogs(params);
+  }
+
+  @Get('tracking-by-id')
+  async GetTrackingLogById(@Query('id') id: string) {
+    return await this.adminService.getTrakcingLogById(id);
   }
 }
