@@ -14,6 +14,13 @@ MONGODB_URI="mongodb://localhost"
 MONGODB_DATABASE="cascading-spy-sheets"
 ```
 
+- To start the MongoDB server in your local environment (if you are using Windows)
+
+```shell
+cd "C:\Program Files\MongoDB\Server\{version}\bin"
+.\mongod.exe --ipv6
+```
+
 - If you want to use vercel,
 
 ```bash
@@ -73,7 +80,7 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
 | `client`          |          | 현재 유저가 사용하고 있는 것으로 추측되는 브라우저/이메일 클라이언트 |
 | `font`            |          | 유저가 설치했는지 확인할 글꼴 이름. URL Encoding을 권장합니다.       |
 | `isFontInstalled` |          | 유저가 해당 글꼴을 설치했는지 여부. `true` 또는 `false`만을 허용함   |
-| `extra`           |          | 기타 기록이 필요한 정보들                                            |
+| `extra`           |          | 기타 기록이 필요한 정보들. 실험에 필요할 값을 마음대로 정의해주세요  |
 
 ### Response
 
@@ -131,4 +138,49 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
         }
 
 
+```
+
+## `GET /admin/tracking-by-id`
+
+특정 `id`에 대해서 수집된 트래킹 결과를 JSON 형식으로 보여줍니다.
+
+이 API 요청에는 인증이 필요합니다. headers의 `x-api-key`에 사전 공유된 API KEY를 넣어서 요청해주세요.
+
+### Request Query Parameters
+
+| Key  | Required | Description                        |
+| ---- | -------- | ---------------------------------- |
+| `id` | Yes      | 트래킹 페이지에 부여되었던 `id` 값 |
+
+### Response Body
+
+| Field                 | Type    | Description                                                         |
+| --------------------- | ------- | ------------------------------------------------------------------- |
+| `id`                  | String  | 트래킹 페이지에 부여되었던 `id` 값                                  |
+| `os`                  | String  | 트래킹 페이지에서 추측된 운영체제 (Optional)                        |
+| `client`              | String  | 트래킹 페이지에서 추측된 브라우저 또는 E-Mail 클라이언트 (Optional) |
+| `fonts`               | Array   | 트래킹 페이지에서 추측된 글꼴 설치 정보                             |
+| `fonts[].font`        | String  | 글꼴 이름                                                           |
+| `fonts[].isInstalled` | Boolean | 해당 글꼴의 설치 여부                                               |
+| `extra`               | String  | 트래킹 페이지에서 수집한 `extra` 값                                 |
+
+예시
+
+```json
+{
+  "id": "test",
+  "os": "windows11",
+  "client": "chrome",
+  "fonts": [
+    {
+      "font": "Pretandard",
+      "isInstalled": false
+    },
+    {
+      "font": "Arial",
+      "isInstalled": true
+    }
+  ],
+  "extra": "api-test"
+}
 ```
