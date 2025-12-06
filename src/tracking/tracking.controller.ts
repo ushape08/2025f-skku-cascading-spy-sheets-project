@@ -8,7 +8,7 @@ export class TrackingController {
   constructor(private readonly trackingService: TrackingService) {}
 
   @Get('/image')
-  getTrackingPixel(
+  async getTrackingPixel(
     @Query() getImageQuery: GetImageQuery,
     @Res() res: express.Response,
   ) {
@@ -17,8 +17,7 @@ export class TrackingController {
     console.log(
       `[${id}] Image Request (timestamp: ${now}, ${JSON.stringify(getImageQuery)})`,
     );
-    // logging의 성격이라 await 붙이지 않고 background task로 넘김
-    this.trackingService.recordTrackingLog(getImageQuery);
+    await this.trackingService.recordTrackingLog(getImageQuery);
 
     const image = this.trackingService.getImage('public/tracking.png');
     res.setHeader('Content-type', 'image/png');
