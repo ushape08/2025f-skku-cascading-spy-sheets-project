@@ -4,12 +4,17 @@ import * as path from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import 'hbs';
 
+const devHosts = ['http://localhost:5173'];
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useStaticAssets(path.join(__dirname, '..', 'public'));
   app.setViewEngine('hbs');
   app.setBaseViewsDir(path.join(__dirname, '..', 'views'));
+  app.enableCors({
+    origin: devHosts,
+  });
 
   await app.listen(process.env.PORT ?? 3000);
 }
