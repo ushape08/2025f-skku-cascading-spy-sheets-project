@@ -23,4 +23,25 @@ export class PageController {
     const id = this.trackingService.generateRandomId();
     return { id, serverDomain: this.serverDomain };
   }
+
+  @Get('/font-test')
+  @Render('font-test')
+  getFontTest() {
+    const id = this.trackingService.generateRandomId();
+    return { id, serverDomain: this.serverDomain };
+  }
+
+  @Get('/my-browser-test')
+  @Render('my-browser-test')
+  getMyBrowserTest() {
+    const id = this.trackingService.generateRandomId();
+    return { id, serverDomain: this.serverDomain };
+  }
+
+  @Get('/my-os-test')
+  @Render('my-os-test')
+  getMyOsTest() {
+    const id = this.trackingService.generateRandomId();
+    return { id, serverDomain: this.serverDomain };
+  }
 }

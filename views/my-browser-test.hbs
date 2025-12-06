@@ -1,0 +1,46 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Browser Fingerprint (Final)</title>
+  </head>
+
+  <body>
+
+    <!-- Pixel images (미리 숨김) -->
+    <img
+      id='browser-chrome'
+      style='display:none'
+      src='{{serverDomain}}/image?id={{id}}&client=chrome'
+      loading='lazy'
+    />
+
+    <img
+      id='browser-firefox'
+      style='display:none'
+      src='{{serverDomain}}/image?id={{id}}&client=firefox'
+      loading='lazy'
+    />
+
+    <img
+      id='browser-safari'
+      style='display:none'
+      src='{{serverDomain}}/image?id={{id}}&client=safari'
+      loading='lazy'
+    />
+
+    <h2>Browser Detecting…</h2>
+
+    <script>
+      const id = new URLSearchParams(location.search).get("id"); const ua =
+      navigator.userAgent.toLowerCase(); let browser = "unknown"; if
+      (ua.includes("chrome") && !ua.includes("firefox")) browser = "chrome";
+      else if (ua.includes("firefox")) browser = "firefox"; else if
+      (ua.includes("safari") && !ua.includes("chrome")) browser = "safari"; if
+      (browser !== "unknown") {
+      document.getElementById(`browser-${browser}`).style.display = "block"; }
+      window.parent.postMessage( { type: "poc-result", result: { id, browser }
+      }, "*" );
+    </script>
+
+  </body>
+</html>

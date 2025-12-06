@@ -1,0 +1,48 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Font Fingerprinting (Final)</title>
+
+    <style>
+      #probe1,
+      #probe2 {
+        visibility: hidden;
+        position: absolute;
+        font-size: 32px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id='probe1' style='font-family: Arial;'>AAAAAA</div>
+    <div id='probe2' style="font-family: 'NoSuchFont', Arial;">AAAAAA</div>
+
+    <!-- Pixel images -->
+    <img
+      id='font-true'
+      style='display:none'
+      src='{{serverDomain}}/image?id={{id}}&font=Arial&isFontInstalled=true'
+      loading='lazy'
+    />
+
+    <img
+      id='font-false'
+      style='display:none'
+      src='{{serverDomain}}/image?id={{id}}&font=Arial&isFontInstalled=false'
+      loading='lazy'
+    />
+
+    <h2>Detecting Font Installation…</h2>
+
+    <script>
+      const id = new URLSearchParams(location.search).get("id"); const w1 =
+      probe1.offsetWidth; const w2 = probe2.offsetWidth; const installed = w1
+      !== w2; if (installed) document.getElementById("font-true").style.display
+      = "block"; else document.getElementById("font-false").style.display =
+      "block"; window.parent.postMessage( { type: "poc-result", result: { id,
+      font: "Arial", installed } }, "*" );
+    </script>
+
+  </body>
+</html>

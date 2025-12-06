@@ -1,0 +1,63 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>OS Fingerprint (Final Stable)</title>
+
+    <style>
+      #probe {
+        font-family: system-ui;
+        font-size: 32px;
+        font-weight: normal;
+        position: absolute;
+        visibility: hidden;
+      }
+
+      img {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id='probe'>abcdefghijklmnopqrstuvwxyz</div>
+
+    <!-- Pixel images -->
+    <img
+      id='os-windows'
+      src='{{serverDomain}}/image?id={{id}}&os=windows11'
+      loading='lazy'
+    />
+    <img
+      id='os-ubuntu'
+      src='{{serverDomain}}/image?id={{id}}&os=ubuntu22.04'
+      loading='lazy'
+    />
+    <img
+      id='os-macos'
+      src='{{serverDomain}}/image?id={{id}}&os=macOS'
+      loading='lazy'
+    />
+
+    <div id='result' style='margin-top:20px; font-size:22px; font-weight:bold;'>
+      Detecting OS…
+    </div>
+
+    <script>
+      const id = new URLSearchParams(location.search).get("id");
+      requestAnimationFrame(() => { const probe =
+      document.getElementById("probe"); const width = probe.offsetWidth; let os
+      = "unknown"; // 너의 PC에서 실제 측정한 값으로 조정 if (width > 240) os =
+      "windows11"; else if (width > 230) os = "ubuntu22.04"; else os = "macOS";
+      // Pixel 이미지 display 처리 if (os === "windows11")
+      document.getElementById("os-windows").style.display = "block"; else if (os
+      === "ubuntu22.04") document.getElementById("os-ubuntu").style.display =
+      "block"; else if (os === "macOS")
+      document.getElementById("os-macos").style.display = "block";
+      document.getElementById("result").innerText = `Detected OS: ${os}
+      (width=${width}px)`; window.parent.postMessage( { type: "poc-result",
+      result: { id, os } }, "*" ); });
+    </script>
+
+  </body>
+</html>
