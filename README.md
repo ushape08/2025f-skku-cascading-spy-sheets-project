@@ -1,4 +1,8 @@
-This is a sample implementation of the tracker's server based on the paper "Cascading Spy Sheets: Exploiting the Complexity of Modern CSS for Email and Browser Fingerprinting" published at NDSS 2025. This was implemented for the purpose of the term project assignment (where students experiment with security-related papers) for Computer Security class in 2025 fall at Sungkyunkwan University.
+# Introduction
+
+This is a sample implementation of the tracker's server based on the paper "Cascading Spy Sheets: Exploiting the Complexity of Modern CSS for Email and Browser Fingerprinting" published at NDSS 2025.
+
+This was implemented for the purpose of the term project assignment (where students experiment with security-related papers) for Computer Security class in 2025 fall at Sungkyunkwan University. This is for educational purposes only and any misuse is prohibited.
 
 # Project Setup
 
@@ -36,7 +40,7 @@ vercel . # deploy (if you have vercel server to deploy)
 - `public/`: Tracking pixel 등 공개될 이미지 등을 저장
 - `src/`: 서버의 비즈니스 로직을 구현
 - `test/`: 기본적으로 존재하는 테스트용 코드 (미사용)
-- `views/`: `hbs` (Handlebars) 엔진을 활용한 동적 html 파일들을 보관함
+- `views/`: `hbs` (Handlebars) 엔진을 활용한 동적 html 예시 파일들입니다. 이를 참고하여 tracking용 페이지를 구성해주세요.
 
 # How to Fingerprint
 
@@ -111,10 +115,10 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
 
 ### Response Body
 
-| Field     | Type         | Description                                                          |
-| --------- | ------------ | -------------------------------------------------------------------- |
-| `total`   | Int          | `results`의 길이                                                     |
-| `results` | Object Array | 조회된 `tracking` 결과. `tracking` collection의 schema를 따라갑니다. |
+| Field     | Type         | Description                                                                                                                                                                                                  |
+| --------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `total`   | Int          | `results`의 길이                                                                                                                                                                                             |
+| `results` | Object Array | 조회된 `tracking` 결과. `tracking` collection의 schema를 따라갑니다. 권한이 있어야만 조회할 수 있기에 `_id`와 같은 MongoDB 기본 값들을 따로 필터링하지는 않으나, 추후 구현 수정 시 불필요한 필드는 제거 필요 |
 
 예시
 
@@ -186,3 +190,65 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
   "extra": "api-test"
 }
 ```
+
+## `GET /admin/compare-ids`
+
+두 `id`에 대해서 fingerprinting 결과가 얼마나 일치하는지 0~1 사이의 수로 표현합니다.
+
+이 API 요청에는 인증이 필요합니다. headers의 `x-api-key`에 사전 공유된 API KEY를 넣어서 요청해주세요.
+
+### Request Query Parameters
+
+| Key   | Required | Description                        |
+| ----- | -------- | ---------------------------------- |
+| `id1` | Yes      | 트래킹 페이지에 부여되었던 `id` 값 |
+| `id2` | Yes      | 트래킹 페이지에 부여되었던 `id` 값 |
+
+### Response Body
+
+| Field        | Type           | Description                                                                                                            |
+| ------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `similarity` | Number or NULL | `id1`, `id2`에 해당되는 tracking log 간의 유사도 비교 값. 0~1 사이의 값이며, 만약 데이터가 없다면 `null`로 처리됩니다. |
+| `tracking1`  | Object         | `id1`에 대한 tracking log. `GET /admin/tracking-by-id`의 response body의 schema와 형식이 동일합니다.                   |
+| `tracking2`  | Object         | `id2`에 대한 tracking log. `GET /admin/tracking-by-id`의 response body의 schema와 형식이 동일합니다.                   |
+
+예시
+
+```json
+{
+  "similarity": 0.6666666666666666,
+  "tracking1": {
+    "id": "e9bc7b115d409b07",
+    "os": "macOS",
+    "fonts": [
+      {
+        "font": "Arial",
+        "isInstalled": true
+      },
+      {
+        "font": "Pretandard",
+        "isInstalled": true
+      }
+    ],
+    "extra": "api-test"
+  },
+  "tracking2": {
+    "id": "069f7c842798f12c",
+    "os": "macOS",
+    "fonts": [
+      {
+        "font": "Arial",
+        "isInstalled": false
+      },
+      {
+        "font": "Pretandard",
+        "isInstalled": true
+      }
+    ]
+  }
+}
+```
+
+# Note
+
+최소한의 검증만을 위해 설계되었기 때문에 잘못된 요청에 대한 예외 처리 등은 구현하지 않았습니다.
