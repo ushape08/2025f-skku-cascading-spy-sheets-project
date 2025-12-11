@@ -1,3 +1,5 @@
+This is a sample implementation of the tracker's server based on the paper "Cascading Spy Sheets: Exploiting the Complexity of Modern CSS for Email and Browser Fingerprinting" published at NDSS 2025. This was implemented for the purpose of the term project assignment (where students experiment with security-related papers) for Computer Security class in 2025 fall at Sungkyunkwan University.
+
 # Project Setup
 
 - node.js 22.x is recommended
@@ -118,26 +120,26 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
 
 ```json
 {
-    "total": 2,
-    "results": [
-        {
-            "_id": "69319dad3ab4a3861a951d18",
-            "id": "4d189808732a8a15",
-            "os": "windows11",
-            "createdAt": "2025-12-04T14:41:49.697Z",
-            "updatedAt": "2025-12-04T14:41:49.697Z",
-            "__v": 0
-        },
-        {
-            "_id": "6931c740660a1ea93a68c9f7",
-            "id": "8706e82b78962603",
-            "os": "ubuntu22.04",
-            "createdAt": "2025-12-04T17:39:12.914Z",
-            "updatedAt": "2025-12-04T17:39:12.914Z",
-            "__v": 0
-        }
-
-
+  "total": 2,
+  "results": [
+    {
+      "_id": "69319dad3ab4a3861a951d18",
+      "id": "4d189808732a8a15",
+      "os": "windows11",
+      "createdAt": "2025-12-04T14:41:49.697Z",
+      "updatedAt": "2025-12-04T14:41:49.697Z",
+      "__v": 0
+    },
+    {
+      "_id": "6931c740660a1ea93a68c9f7",
+      "id": "8706e82b78962603",
+      "os": "ubuntu22.04",
+      "createdAt": "2025-12-04T17:39:12.914Z",
+      "updatedAt": "2025-12-04T17:39:12.914Z",
+      "__v": 0
+    }
+  ]
+}
 ```
 
 ## `GET /admin/tracking-by-id`
