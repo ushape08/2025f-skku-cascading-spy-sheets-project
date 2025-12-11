@@ -17,4 +17,12 @@ export class AdminController {
   async GetTrackingLogById(@Query('id') id: string) {
     return await this.adminService.getTrakcingLogById(id);
   }
+
+  @Get('compare-ids')
+  async compareTrackingLogs(
+    @Query('id1') id1: string,
+    @Query('id2') id2: string,
+  ) {
+    return await this.adminService.compareTrackingLogs(id1, id2);
+  }
 }

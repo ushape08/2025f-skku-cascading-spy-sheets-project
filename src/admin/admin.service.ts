@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Tracking, TrackingDocument } from '../mongo/schemas/tracking.schema';
 import { FilterQuery, Model } from 'mongoose';
 import { GetTrackingLogByIdResponseDto } from './dto/get-tracking-log-by-id-response.dto';
+import { CompareTrackingLogsResponseDto } from './dto/compare-tracking-logs-response.dto';
 
 @Injectable()
 export class AdminService {
@@ -54,5 +55,48 @@ export class AdminService {
     });
 
     return trackingLog;
+  }
+
+  async compareTrackingLogs(
+    id1: string,
+    id2: string,
+  ): Promise<CompareTrackingLogsResponseDto> {
+    const tracking1 = await this.getTrakcingLogById(id1);
+    const tracking2 = await this.getTrakcingLogById(id2);
+
+    let total = 0,
+      isSame = 0;
+    /*
+     * 값 비교 정책: 둘 중에 한 곳에만 정의된 값이면 별도 검증 없이 넘어가며, 둘 다 데이터가 있는 경우에만 값이 동등한지 비교한다.
+     */
+
+    if (tracking1.os && tracking2.os) {
+      total++;
+      if (tracking1.os === tracking2.os) isSame++;
+    }
+    if (tracking1.client && tracking2.client) {
+      total++;
+      if (tracking1.client === tracking2.client) isSame++;
+    }
+    tracking1.fonts.forEach(({ font, isInstalled }) => {
+      // O(n) linear search라 조금 비효율적이긴 한데, 실험용으로 구현한 것이니 나중에 성능이 이슈가 될 때 개선할 것
+      const matchedFont = tracking2.fonts.find(
+        ({ font: font2 }) => font === font2,
+      );
+      if (matchedFont) {
+        total++;
+        if (isInstalled === matchedFont.isInstalled) isSame++;
+      }
+    });
+    if (tracking1.extra && tracking2.extra) {
+      total++;
+      if (tracking1.extra === tracking2.extra) isSame++;
+    }
+
+    return {
+      similarity: total ? isSame / total : null,
+      tracking1,
+      tracking2,
+    };
   }
 }
