@@ -39,6 +39,11 @@ vercel . # deploy (if you have vercel server to deploy)
 
 - `public/`: Tracking pixel 등 공개될 이미지 등을 저장
 - `src/`: 서버의 비즈니스 로직을 구현
+  - `src/admin/`: Tracking log 등 fingerprinting 결과를 조회하는 비즈니스 로직을 담고 있습니다.
+  - `src/auth/`: Admin API들을 위한 인증 middleware가 구현되어 있습니다
+  - `src/mongo/`: MongoDB를 다루기 위한 module과 MongoDB Collection Schema가 정의되어 있습니다.
+  - `src/page/`: 클라이언트에서 노출되는 웹페이지를 서빙하는 비즈니스 로직을 담고 있습니다.
+  - `src/tracking/`: Tracking pixel을 다루는 동작이 정의되어 있습니다.
 - `test/`: 기본적으로 존재하는 테스트용 코드 (미사용)
 - `views/`: `hbs` (Handlebars) 엔진을 활용한 동적 html 예시 파일들입니다. 이를 참고하여 tracking용 페이지를 구성해주세요.
 
@@ -71,13 +76,15 @@ CSS를 이용한 핑거프린팅을 어떻게 만드는지는 [cascading-spy-she
 
 4. 로컬 환경에서 실행한 뒤 문제가 없는지 확인해주세요. 접속은 `localhost:3000/{만든 hbs 파일 이름}`으로 하면 됩니다.
 
+5. Fingerprinting 결과는 페이지에 보여지는 `id`를 기반으로 `GET /admin/tracking-by-id` API를 사용하여 조회할 수 있습니다. 전체 raw 데이터 확인은 `GET /admin/tracking-logs`로 진행합니다.
+
 # API Doc
 
 ## `GET /image`
 
 요청 온 정보를 `tracking` collection에 저장하고, 1 × 1 크기의 PNG 이미지를 반환합니다.
 
-**추가 설명**: 환경에 따른 CSS 쿼리의 결과 차이 등을 이용하여 `display: none` 처리해야 되나, 해당 CSS 쿼리를 위해 상정된 OS나 브라우저가 아닌 경우 `display: none` 처리가 제대로 되지 않을 수 있습니다. 이 경우 하나의 `os` 값에 대해서 여러 종류의 `client`가 올 수도 있고, 하나의 `client` 값에 대해 여러 종류의 `os`가 올 수 있는데, 이런 경우는 서버 단에서 데이터 조회 시 쳐낼 수 있도록 `os`, `client` 둘 다 무조건 보내도록 합니다.
+**추가 설명**: 환경에 따른 CSS 쿼리의 결과 차이 등을 이용하여 `display: none` 처리해야 되나, 해당 CSS 쿼리를 위해 상정된 OS나 브라우저가 아닌 경우 `display: none` 처리가 제대로 되지 않을 수 있습니다. 이 경우 하나의 `client` 값에 대해 여러 종류의 `os`가 올 수 있는데, 이런 경우는 서버 단에서 데이터 조회 시 쳐낼 수 있도록 `os`, `client` 둘 다 무조건 보내도록 합니다.
 
 ### Request Query Parameters
 
