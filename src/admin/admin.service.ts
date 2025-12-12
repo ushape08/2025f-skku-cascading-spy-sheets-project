@@ -47,25 +47,18 @@ export class AdminService {
      *
      * 1. 서버에서 mongoDB에서 특정 id로 된 tracking log를 모두 조회
      * 2. client를 기준으로 os 종류가 2개 이상 조회되는 client는 후보에서 제외하고, os가 하나인 client만 남김
-     * 3. 2번과 비슷하게 os 기준으로 client 종류가 2개 이상 조회되는 os는 후보에서 제외
-     * 4. 필터링 결과가 여러 개라면, 이 중에 가장 최신인 데이터를 따름
+     * 3. 필터링 결과가 여러 개라면, 이 중에 가장 최신인 데이터를 따름
      */
 
     const results = await this.trackingModel
       .find({ id })
       .sort({ createdAt: 1 });
 
-    // 2,3번 필터링을 위한 코드
-    const clientsGroupedByOs: Map<string, string[]> = new Map();
+    // 2번 필터링을 위한 코드
     const osGroupedByClient: Map<string, string[]> = new Map();
 
     results.forEach(({ os, client }) => {
       if (os && client) {
-        if (!clientsGroupedByOs.has(os)) clientsGroupedByOs.set(os, []);
-        const clientList = clientsGroupedByOs.get(os)!;
-        // 특정 OS 조건에 대해 client 목록을 조회함 => client가 2개 이상 있으면 해당 OS는 아닐거라는 증거
-        if (!clientList.find((c) => c === client)) clientList.push(client);
-
         if (!osGroupedByClient.has(client)) osGroupedByClient.set(client, []);
         const osList = osGroupedByClient.get(client)!;
         // 특정 client 조건에 대해 OS 목록을 조회함 => 2개 이상 있으면 해당 client는 아닐거라는 증거
@@ -75,13 +68,9 @@ export class AdminService {
 
     // JavaScript에서 Map은 insertion order대로 key를 순회할 수 있으므로, 가장 마지막에 확인한 게 가장 최근임이 보장됨
     osGroupedByClient.forEach((osList, client) => {
-      // os-client 쌍이 하나임이 보장되는 경우에만 해당 조건으로 특정
       if (osList.length === 1) {
-        const os = osList[0];
-        if (clientsGroupedByOs.get(os)?.length === 1) {
-          trackingLog.client = client;
-          trackingLog.os = os;
-        }
+        trackingLog.client = client;
+        trackingLog.os = osList[0];
       }
     });
 
@@ -93,7 +82,13 @@ export class AdminService {
       )
       .forEach(({ font, isFontInstalled, extra }) => {
         if (font && isFontInstalled != undefined) {
-          trackingLog.fonts.push({ font, isInstalled: isFontInstalled });
+          // O(n^2)
+          const matchedFontLog = trackingLog.fonts.find(
+            ({ font: f }) => f === font,
+          );
+          // 만약 한 font에 대해서 여러 기록이 있으면, 가장 최근 데이터가 덮어쓰도록 처리함
+          if (matchedFontLog) matchedFontLog.isInstalled = isFontInstalled;
+          else trackingLog.fonts.push({ font, isInstalled: isFontInstalled });
         }
         if (extra) trackingLog.extra = extra;
       });
