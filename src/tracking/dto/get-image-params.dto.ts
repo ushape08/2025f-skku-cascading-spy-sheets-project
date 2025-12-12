@@ -1,8 +1,27 @@
-export type GetImageQuery = {
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+
+export class GetImageQuery {
+  @IsNotEmpty()
+  @IsString()
   id: string;
-  os?: string; // user's operating system
-  client?: string; // browser or e-mail client
+
+  @IsNotEmpty()
+  @IsString()
+  os: string; // user's operating system
+
+  @IsNotEmpty()
+  @IsString()
+  client: string; // browser or e-mail client
+
+  @IsOptional()
+  @IsString()
   font?: string;
+
+  @IsOptional()
+  @IsBoolean()
   isFontInstalled?: boolean;
+
+  @IsOptional()
+  @IsString()
   extra?: string;
-};
+}

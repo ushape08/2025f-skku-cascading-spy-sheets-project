@@ -12,12 +12,14 @@ export class TrackingController {
     @Query() getImageQuery: GetImageQuery,
     @Res() res: express.Response,
   ) {
-    const { id } = getImageQuery;
+    const { id, os, client } = getImageQuery;
     const now = Date.now();
     console.log(
       `[${id}] Image Request (timestamp: ${now}, ${JSON.stringify(getImageQuery)})`,
     );
-    await this.trackingService.recordTrackingLog(getImageQuery);
+    // id, os, client 모두 갖춰야만 기록
+    if (id && os && client)
+      await this.trackingService.recordTrackingLog(getImageQuery);
 
     const image = this.trackingService.getImage('public/tracking.png');
     res.setHeader('Content-type', 'image/png');
